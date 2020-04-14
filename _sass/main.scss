@@ -1,0 +1,50 @@
+#content {
+  padding: 30px 0px;
+  text-align: center;
+  justify-content: center;
+  max-width: 1000px;
+  margin: auto;
+}
+
+#tools a {
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-right: 5px;
+}
+
+nav {
+  background-color: rgb(0, 84, 60) !important;
+}
+
+.navbar-burger {
+  color: white !important;
+}
+
+.icon {
+  color: rgb(253, 182, 26);
+}
+
+nav {
+  padding-left: 15px;
+}
+
+.segment {
+  margin-bottom: 30px;
+}
+
+table {
+  margin: auto;
+}
+
+.footer {
+  /*
+  Hack to extend footer:
+  https://stackoverflow.com/questions/9741701/how-can-i-extend-a-footer-to-bottom-of-page */
+  box-shadow: 0 50vh 0 50vh #fafafa;
+}
+
+#contact {
+  width: 75%;
+  margin: auto;
+  padding: 30px 60px;
+}
