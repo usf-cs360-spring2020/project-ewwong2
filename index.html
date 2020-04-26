@@ -3,28 +3,90 @@ layout: default
 title: Home
 ---
 <div>
-  <img class="image is-128x128" style="margin: auto;" src="usf.png" alt="University of San Francisco Logo" />
-</div>
-<div>
   <h3 class="title is-3">About</h3>
   <p>
-    This site aims to dive deeper into the courses offered at the
+    The original purpose of this site was to explore different ways
+    prerequisites of university courses can be explored. Unfortunately, I was
+    due to the nature of the project, I was unable to attain permission to use
+    the course data of my university,
     <a href="https://www.usfca.edu/">University of San Francisco</a>.
-    Although I am a student at the
-    <a href="https://www.usfca.edu/">University of San Francisco</a>,
-    I never bothered
-    to look depper into the statistics of the school beyond the pamphlet given
-    to me in freshman year.
   </p>
   <br/>
   <p>
-    Over the course of my undergraduate years, I have
-    always had issues with registration whether it be limited course capacity,
-    prerequisite, hold, or restriction that I needed to get resolved. While
-    this website will not and cannot be the solution to that problem, I am
-    hoping to explore different ways to present information that could have
-    helped me back then. As a graduate student now, I have much less issues with
-    registration, but perhaps the ideas in the site could be used to either
-    gain insight on the course system or help with registration.
+    While the data of this site needs to change, this does not mean the
+    motivation behind this site has changed. Throughout my semesters at the
+    <a href="https://www.usfca.edu/">University of San Francisco</a>, I have
+    nearly always struggled with registration whether it be a prerequisite,
+    hold, waitlist, and/or restriction. While I cannot fix some of these issues,
+    I can do my best to alleviate mishaps or miscalculations on my own part.
+  </p>
+  <br/>
+  <p>
+    Specifically, I want to focus on prerequisites. This is an easily avoidable
+    issue when registering. Advisors have been extremely helpful in this regard.
+    However, I personally never had the easiest time navigating my university's
+    registration page. I feel like a visual representation such as a graph would
+    have been irreplaceable when I was registering for courses, especially for
+    those last minute changes to a planned schedule and back up schedule.
+  </p>
+  <br/>
+  <p>
+    In the first paragraph I mentioned that I was unable use the course data for
+    my own university. Fortunately, the
+    <a href="https://illinois.edu/">University of Illinois</a>
+    has
+    <a href="https://courses.illinois.edu/cisdocs/">public API access</a>
+    to their catalog and schedule. More information about how it was used can be
+    seen on this
+    <a href="{{ "/data.html" | prepend: site.baseurl }}">page</a>.
+  </p>
+</div>
+<div>
+  <h3 class="title is-3">Future Work</h3>
+  <p>
+    As you might suspect, I would love to be able to work with the data from my
+    own university. This would be much more personal and beneficial for me and
+    potentially my classmates. However, since I am unable to do so, I am at
+    least hoping this project will be generic enough to support data from my own
+    university if I ever get the opportunity.
+  </p>
+  <br/>
+  <p>
+    Currently corequisites, "or" vs "and", and complex requirements are not
+    considered. This begins to complicate the graph, so this is offered as
+    details on demand (tooltips). I would love feedback on how these
+    relationships can be properly represented. For example, a node with many
+    outdegrees seems to imply a high number of prerequisites. However, this
+    would not be the case if it was a choice between each of the outdegrees (or
+    as opposed to and). One option is colored links but it does not resolve
+    more complex prerequisites such as class A and class B or class C and class
+    D.
+  </p>
+  <br/>
+  <p>
+    I have no intention of this site ever becoming a full end to end solution
+    for registering and applying for courses. However, it would be amazing if
+    this could be part of a larger system to help visualize requirements for a
+    given major. This would likely entail a list of required courses (or perhaps
+    remaining courses). These would serve as the root(s) for the filtering
+    search. In that same regard, it would interesting to divide the nodes by the
+    years a student is intended to take a course or perhaps by upper and lower
+    division. This would result in a more linear and "locked" graph. This would
+    likely utilize forceX to snap certain course types.
+  </p>
+  <br/>
+  <img src="{{ "/assets/images/link1.png" | prepend: site.baseurl }}" alt="Linear Linking" />
+  <br/>
+  <p>
+    Another interesting idea would be to use this graph to supplement a course
+    plan. As a student begins to complete courses, the graph could start showing
+    which courses can be taken next with colors.
+  </p>
+  <br/>
+  <p>
+    One last idea is to invert the entire graph. The use of this also changes.
+    Instead of showing what is needed to take a course, it flips to become a
+    opportunity graph. It will instead represent what courses you have the
+    opportunity to take given the courses that you have already taken.
   </p>
 </div>

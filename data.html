@@ -3,52 +3,25 @@ layout: default
 title: Data
 ---
 <div class="tags is-centered segment">
-  <span class="tag is-success is-medium is-rounded"><b>138,351</b>&nbsp;Rows</span>
-  <span class="tag is-success is-medium is-rounded"><b>30</b>&nbsp;Columns</span>
-  <span class="tag is-success is-medium is-rounded">Each row is a&nbsp;<b>Course</b></span>
+  <span class="tag is-link is-medium is-rounded"><b>138,351</b>&nbsp;Rows</span>
+  <span class="tag is-link is-medium is-rounded"><b>30</b>&nbsp;Columns</span>
+  <span class="tag is-link is-medium is-rounded">Each row is a&nbsp;<b>Course</b></span>
 </div>
 
 <div class="segment">
   <h3 class="title is-3">Data Source</h3>
   <p>
     The data was taken from the
-    <a href="https://myusf.usfca.edu/dashboard">USF Banner Self Service</a>.
-    This is an option from the dashboard and is only available to students and
-    faculty at the
-    <a href="https://www.usfca.edu/">University of San Francisco</a>.
+    <a href="https://github.com/illinois/courses-dataset">University of Illinois course dataset</a>.
+    The
+    <a href="https://raw.githubusercontent.com/illinois/course-catalog-dataset/master/course-schedule/2020-sp.csv">spring 2020 dataset</a>
+    was used. This dataset was parsed from the University of Illinois
+    <a href="https://courses.illinois.edu/cisdocs/">public API access</a>.
   </p>
   <br/>
   <p>
-    The smart choice would have been to ask for the API or the data in a more
-    succinct form. Instead, I took the unnecessarily long and totally
-    unnecessary route. I took each of the list of courses for each semester from
-    2008 and 2020 and put it through
-    <a href="https://pandas.pydata.org/">pandas</a>.
-    This required a significant amount of cleaning. Then I fetched all of the
-    catalog entries from a constructed URL. My python f-string ended up looking
-    like this:
-    `https://ssb-prod.ec.usfca.edu/PROD/bwckctlg.p_disp_course_detail?cat_term_in={row["Year"]}{term_id}0&subj_code_in={row["Subj"]}&crse_numb_in={row["Crse"]}`.
-    This URL apparently does not require authentication. Then I used a
-    combination of regex and
-    <a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">Beautiful Soup</a>
-    to parse out the parts that I wanted and added this to the dataframe. Along
-    the way I learned that there were 100,000+ rows across the years, so adding
-    data for each row from a URL GET request was taking much too long. So I had
-    to switch to multi-threading. After quite some time of fumbling over the
-    code, I was able to use
-    <a href="https://dask.org/">Dask</a>
-    to multi-thread some of my code. All this is to say that my spaghetti code
-    in
-    <a href="https://jupyter.org/">Jupyter Notebooks</a>
-    did not work. It ended with some issues such as courses with no department
-    or different formatting, but it was able to pull some interesting data. If
-    it is interesting, I can clean up the code in my Jupyter Notebook a bit and
-    share this on GitHub.
-  </p>
-  <br/>
-  <p>
-    The goal is to parse this data even more to build the dependencies
-    (prerequisites) and be able to build a dependency graph.
+    The data was wrangled to a form that would work for D3. This is an object
+    with a nodes and links array.
   </p>
 </div>
 <div class="segment">
@@ -63,29 +36,48 @@ title: Data
 
     <tbody>
       <tr>
-        <td>CRN</td>
-        <td>Course registration number</td>
+        <td>Subject</td>
+        <td>Course subject (ie. ABE, CS, ...)</td>
       </tr>
       <tr>
-        <td>Department</td>
-        <td>Name of department the course is under</td>
+        <td>Number</td>
+        <td>Course number (ie. 456, 141, ...)</td>
       </tr>
       <tr>
-        <td>Year</td>
-        <td>Year of course from 2008-2020</td>
+        <td>Credit Hours</td>
+        <td>Credit Hours of the course (ie. 3 hours.)</td>
       </tr>
       <tr>
-        <td>Semester</td>
-        <td>Fall, Spring, Intersession, or Summer</td>
+        <td>Name</td>
+        <td>Name of the course</td>
+      </tr>
+      <tr>
+        <td>Description</td>
+        <td>Description of the course</td>
       </tr>
     </tbody>
   </table>
 </div>
 <div class="segment">
-  <h3 class="title is-3">License</h3>
+  <h3 class="title is-3">CIS Data Explorer</h3>
   <p>
-    Since this data was pulled from
-    <a href="https://myusf.usfca.edu/dashboard">USF Banner Self Service</a>,
-    there is no direct license for the data.
+    From the
+    <a href="https://courses.illinois.edu/cisdocs/">CIS documentation</a>:
+  </p>
+  <blockquote cite="https://courses.illinois.edu/cisdocs/">
+    <p>
+      The Catalog and Schedule API are <b>publicly accessible</b>, via the Data Explorer App.
+    </p>
+    <cite>
+      University of Illinois. 2020. Spring 2020 Course Dataset [CSV File].
+      Retrieved from
+      <a href="https://github.com/illinois/courses-dataset">https://github.com/illinois/courses-dataset</a>
+      on April 23, 2020.
+    </cite>
+  </blockquote>
+  <p>
+    Note that the data was not directly taken from the CIS data explorer. The
+    data was taken from the preprocessed
+    <a href="https://github.com/illinois/courses-dataset">GitHub page</a>.
   </p>
 </div>
