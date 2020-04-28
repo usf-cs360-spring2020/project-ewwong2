@@ -48,7 +48,7 @@ const forceProperties = {
 var map;
 var gRoots;
 
-d3.json('{{ '/assets/data/data-uoi.json' | prepend: site.baseurl }}', convert).then(data => {
+d3.json('{{ '/assets/data/uoi-sp2020.json' | prepend: site.baseurl }}', convert).then(data => {
   console.log(data);
   map = mapping(data);
   initDefaults();
