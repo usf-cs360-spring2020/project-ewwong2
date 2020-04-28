@@ -6,10 +6,18 @@
   margin: auto;
 }
 
+.mt-4 {
+  margin-top: 20px;
+}
+
 #tools a {
   padding-left: 1em;
   padding-right: 1em;
   margin-right: 5px;
+}
+
+table#schedule td, table#schedule th {
+  border-bottom: 1px solid rgba(237, 83, 56, 0.2);
 }
 
 nav {

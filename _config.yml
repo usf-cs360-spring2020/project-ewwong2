@@ -30,7 +30,7 @@ url: "https://usf-cs360-spring2020.github.io/" # the base hostname & protocol fo
 # github_username:  jekyll
 
 # Build settings
-theme: minima
+# theme: minima
 # plugins:
 #   - jekyll-feed
 

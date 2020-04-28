@@ -8,7 +8,6 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem "github-pages", group: :jekyll_plugins
 gem "jekyll", "~> 3.8.5"
-gem "minima", "~> 2.5"
 
 # Performance-booster for watching directories on Windows
 gem "wdm", "~> 0.1.1", :install_if => Gem.win_platform?
