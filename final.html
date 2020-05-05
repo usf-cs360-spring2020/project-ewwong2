@@ -1,0 +1,131 @@
+---
+layout: default
+title: Course Selection
+---
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@5.2.3"></script>
+<p class="subtitle">2020 Courses</p>
+<div class="mt-4">
+  <div class="flex-container">
+    <div class="field" style="width: 500px; margin: auto; margin-bottom: 5px;">
+      <div class="control">
+        <input class="input" type="text" placeholder="Find Course..." id="search" style=" text-align: center; border-radius: 25px; box-shadow: none;">
+      </div>
+    </div>
+    <div id="results-wrapper">
+      <div id="results"></div>
+    </div>
+    <div style="margin-top:20px;/*background-color: rgba(255, 221, 87, 0.7);*/padding: 0px 10px; border-radius: 5px;">
+      <div class="content" style="padding-top: 0px;">
+        <p class="title" style="margin-bottom: 10px;">Schedule</p>
+        <div id="schedule" class="content" style="max-height: 500px; overflow-y: scroll;"></div>
+      </div>
+    </div>
+    <div style="position:absolute;transform: translate(0px, 15px); width: 250px; height: 100%;">
+      <div style="margin-top:5px;background-color: rgba(237, 83, 56, 0.7); padding: 0px 20px; border-radius: 5px; opacity: 0;" id="hover-container">
+        <div class="content is-size-7 has-text-white" id="hover" style="height: 160px; overflow: hidden;padding: 20px 0px;"></div>
+      </div>
+    </div>
+    <figure>
+      <svg id="graph" style="min-height: 600px;">
+        <g id="links"></g>
+        <g id="circles"></g>
+        <g id="legend">
+          <g id="legend-color"></g>
+        </g>
+        <g id="labels"></g>
+      </svg>
+
+      <figcaption>
+        Caption: This visualiation is a force directed graph. It shows the
+        courses needed to take the selected courses. More information
+        about the data can be found
+        <a href="{{ "/data.html" | prepend: site.baseurl }}">here</a>.
+      </figcaption>
+    </figure>
+  </div>
+  <div id = "container">
+    <svg id="calendar"></svg>
+    <div id="tag"></div>
+  </div>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!-- <script src="{{ "/assets/js/force.js" | prepend: site.baseurl }}"></script> -->
+  <script src="{{ "/assets/js/calendar.js" | prepend: site.baseurl }}"></script>
+  <script src="{{ "/assets/js/final.js" | prepend: site.baseurl }}"></script>
+</div>
+<div class="mt-4">
+  <h3>Question</h3>
+  <p>
+    The question this visualization aims to answer is broadly "What courses do I
+    need to take in order to take this other course?". The specific course or
+    courses will depend on the person using the visualization and filters.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Answer</h3>
+  <p>
+    This visualization is aimed more towards data exploration so without
+    selecting any courses, it doesn't really answer any question. If we look at
+    a specific question though, such as "What do I need to take in order to take
+    Interactive Computer Graphics (CS 418)?". We can select this course and see
+    that we would need to take alot of courses. From the schedule tile, we can
+    see that we would need to take: CS 225 and (MATH 225 or MATH 415) and MATH
+    241. Each of those requirements have their own requirements though. All the
+    requirements and the requirements for the requirements can be seen in the
+    graph.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Encoding</h3>
+  <p>
+    The data only shows Spring 2020 courses. Color encodes the subject. A node
+    represents a course. A directed link represents a dependency from one course
+    to another course. This can be a variety of different link types such as
+    prerequisites or corerequisites.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Interactivity</h3>
+  <p>
+    The graph can be filtered by courses. This can be done by choosing one or
+    more courses in the "Course Selection" tile. Ctrl + Click to select multiple.
+    Shift + Click to select and range.
+  </p>
+  <p>
+    This will update the graph to
+    show the dependencies for those courses. The next paragraph will explain
+    how this works. Details on demand are also provided as a seperate tile under
+    the course selection. This is to prevent sporadic graph loading and
+    obscuring the graph with a tooltip. An interactivity that has not been
+    implemented yet is double click to add the course as to the course selection.
+  </p>
+  <p>
+    Selecting a course is actually starting a
+    <a href="https://en.wikipedia.org/wiki/Depth-first_search">Depth First Search</a>
+    for each "root" (course). This will add each course in the DFS to the graph
+    and include the corresponding links.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Wrangling</h3>
+  <p>
+    Details about data wrangling can be found
+    <a href="{{ "/data.html" | prepend: site.baseurl }}">here</a>.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Conclusion</h3>
+  <p>
+    It is really interesting to see how the dependency graph grows. While it
+    seems self explanatory that higher division course will have larger trees,
+    it seems that there are quite a free higher division courses that have no
+    prerequisites at all. There are also quite a few courses with special
+    requirements such as permission from the instructor.
+  </p>
+</div>
+<div class="mt-4" style="display: grid;">
+  <h3>Attribution</h3>
+  <a href="https://www.valentinog.com/blog/html-table/">HTML Table in JS</a>
+  <a href="http://bl.ocks.org/fancellu/2c782394602a93921faff74e594d1bb1">Direct Force Directed Graph</a>
+  <a href="https://observablehq.com/@d3/force-directed-graph">Force Directed Graph</a>
+  <a href="https://blockbuilder.org/steveharoz/8c3e2524079a8c440df60c1ab72b5d03">D3-force Testing Ground</a>
+</div>
