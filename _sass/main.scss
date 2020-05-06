@@ -1,35 +1,44 @@
+#conflicts {
+  transition: all 200ms ease;
+}
+
 #container {
   margin: 0 auto;
   position: relative;
-  width:800px;
   overflow: visible;
+  transition: width 1s;
+}
+
+#calendar-column {
+  transition: width 0.6s ease;
+}
+
+#calendar-column:hover {
+  width: 50%;
+  transition: width 0.6s ease 0.3s;
 }
 
 #calendar {
-    width:800px;
-    height:400px;
-    overflow: visible;
+  max-height: 600px;
+  overflow: visible;
 }
 
 .grid .tick {
-    stroke: lightgrey;
-    opacity: 0.3;
-    shape-rendering: crispEdges;
+  stroke: lightgrey;
+  opacity: 0.3;
+  stroke-width: 0.7;
 }
 
 .grid path {
-      stroke-width: 0;
+    stroke-width: 0;
 }
 
 #tag {
   color: white;
   background: rgba(85, 85, 85, 0.8);
   border-radius: 5px;
-  width: 150px;
   position: absolute;
-  display: none;
   padding:3px 6px;
-  margin-left: -80px;
   font-size: 11px;
   pointer-events: none;
 }

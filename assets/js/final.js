@@ -13,7 +13,7 @@ const color = d => scale(d.subject);
 
 const forceProperties = {
     center: {
-        x: 0.55,
+        x: 0.45,
         y: 0.5
     },
     charge: {
@@ -196,7 +196,7 @@ function addResults(results) {
 }
 
 function addCourse(course, section) {
-  console.log('Add', course, section);
+  console.log('Add', course, section, gRoots);
   !(course in gRoots) && (gRoots[course] = new Set())
   gRoots[course].add(+section);
   $('#search').val('');
@@ -205,7 +205,7 @@ function addCourse(course, section) {
 }
 
 function removeCourse(course, section) {
-  console.log('Remove', course, section);
+  console.log('Remove', course, section, gRoots);
   gRoots[course].delete(+section);
   if (gRoots[course].size === 0) {
     delete gRoots[course];
@@ -221,15 +221,6 @@ function convert(d) {
 }
 
 function initDefaults() {
-  // const filter = document.getElementById("filter");
-  // const courses = Object.keys(map.nodes).sort();
-  // courses.forEach(course => {
-  //   let option = document.createElement("option");
-  //   option.text = course;
-  //   option.value = course;
-  //   filter.add(option);
-  // });
-
   svg.attr("viewBox", [0, 0, width, height]);
 
   svg.append('defs').append('marker')
@@ -334,9 +325,21 @@ function buildSchedule() {
   let table = document.querySelector("div#schedule");
   table.innerHTML = "";
   let data = Object.values(map.nodes).sort().filter(course => Object.keys(gRoots).includes(course.id));
+  let creditsMin = 0;
+  let creditsMax = 0;
+  let calendarData = [];
   console.log(data);
   for (course of data) {
-    let sections = [...gRoots[course.id]].filter(sectionIdx => sectionIdx !== -1).map(sectionIdx => map.nodes[course.id].sections.filter(section => section.start !== 'ARRANGED')[sectionIdx]);
+    let creditSplit = course.credits.split(' ');
+    if (gRoots[course.id].has(-1)) {
+      creditsMin += +creditSplit[0];
+      creditsMax += creditSplit.length > 3? +creditSplit[2]: +creditSplit[0];
+    }
+    let sectionNums = [...gRoots[course.id]].sort().filter(sectionIdx => sectionIdx !== -1);
+    let sections = sectionNums.map(sectionIdx => map.nodes[course.id].sections.filter(section => section.start !== 'ARRANGED')[sectionIdx]);
+    let tempCourse = {...course};
+    tempCourse.sections = sections;
+    calendarData = calendarData.concat(tempCourse);
     table.innerHTML += `
     <div class="schedule-entry">
       <h4 style="margin-bottom: 5px; padding-top: 5px;">
@@ -350,7 +353,9 @@ function buildSchedule() {
       <h5 class="is-size-7">Selected Sections:<h5>
       <div class="tags" style="margin-top: 5px; margin-bottom: 2px;">
         ${sections.filter(section => section.start !== 'ARRANGED').map(function(section, idx) {
-          return `<span class="tag is-link is-light is-rounded time tooltip" onclick="removeCourse('${course.id}', '${idx}');">
+          creditsMin += +creditSplit[0];
+          creditsMax += creditSplit.length > 3? +creditSplit[2]: +creditSplit[0];
+          return `<span class="tag is-link is-light is-rounded time tooltip" onclick="removeCourse('${course.id}', '${sectionNums[idx]}');">
                     <i class="fas fa-${seasonToIcon(section.semester.split(' ')[0])}"></i>&nbsp;&nbsp;${section.days} ${section.start} to ${section.end}
                     <span class="tooltiptext">${section.instructors === 'None'? 'TBD': section.instructors}</span>
                   </span>`;
@@ -360,6 +365,8 @@ function buildSchedule() {
     </div>
     `;
   }
+  d3.select("span#credit-hours").node().innerHTML = `${creditsMin === creditsMax? `${creditsMin}`: `${creditsMin} to ${creditsMax}`} credit hours`;
+  drawCalendar(calendarData);
 }
 
 function initializeForces(links, simulation) {
