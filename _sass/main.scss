@@ -1,5 +1,18 @@
-#conflicts {
-  transition: all 200ms ease;
+.context-menu {
+  position: absolute;
+  display: none;
+  border-radius: 5px;
+  max-width: 250px;
+  z-index: 1200;
+  padding: 5px 15px;
+  justify-content: center;
+  text-align: center;
+  background-color: rgba(250, 250, 250, 0.9);
+  font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  max-height: 150px;
+  font-size: 11px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #container {

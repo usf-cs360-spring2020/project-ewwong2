@@ -30,12 +30,12 @@ const forceProperties = {
     },
     forceX: {
         enabled: true,
-        strength: .01,
+        strength: .04,
         x: .5
     },
     forceY: {
         enabled: true,
-        strength: .01,
+        strength: .04,
         y: .5
     },
     link: {
@@ -84,7 +84,7 @@ window.onload = function () {
 function removeGarbage(nodes) {
   const filter = document.getElementById("filter");
   // TODO: Reparse these in a cleaner manner
-  const garbage = new Set(["Prerequisite: 115", "One 200", ", 257", "additional 400", "and 103", "and 173", "and 401", "of 300", "of 400", "or 221", "or 415", " 500", "244- 272", "former 320", "formerly 201", "formerly 202", ", 108", ", 172", ", 273", ", 274", ", 321", ", 371", "17, 173", "A 200", "to 200", "the 400", "the 200", "or 511", "or 348", "or 300", "or 212", "or 101", "or 016", "numbered 103", "designated 400", "appropriate 300", "any 400", "another 200", "another 100", "and/or 300", "and 435", "and 400", "and 350", "and 251", "and 223", "additional 200", "a 500"]);
+  const garbage = new Set(["Prerequisite: 115", "One 200", ", 257", "additional 400", "and 103", "and 173", "and 401", "of 300", "of 400", "or 221", "or 415", " 500", "244- 272", "former 320", "formerly 201", "formerly 202", ", 108", ", 172", ", 273", ", 274", ", 321", ", 371", "17, 173", "A 200", "to 200", "the 400", "the 200", "or 511", "or 348", "or 300", "or 212", "or 101", "or 016", "numbered 103", "designated 400", "appropriate 300", "any 400", "another 200", "another 100", "and/or 300", "and 435", "and 400", "and 350", "and 251", "and 223", "additional 200", "a 500", "Two 400", "PHIL, 202"]);
   console.log(nodes);
   return nodes.filter(course => !garbage.has(course.id));
 }
@@ -256,9 +256,7 @@ function initInteractivity() {
     d3.select("div#hover-container")
       .transition()
       .style("opacity", 1);
-  });
-
-  circleGroup.selectAll("circle.circles").on("mouseout.info", function(d) {
+  }).on("mouseout.info", function(d) {
     d3.select(this)
       .transition()
       .attr("stroke", Object.keys(gRoots).includes(d.id)? "#7ce5fc": d3.lab(color(d)).darker());
@@ -266,6 +264,47 @@ function initInteractivity() {
       d3.select("div#hover-container")
         .transition()
         .style("opacity", 0);
+  }).on("contextmenu.info", function(d) {
+    // create the div element that will hold the context menu
+    d3.selectAll('.context-menu').data([1])
+      .enter()
+      .append('div')
+      .attr('class', 'context-menu');
+    // close menu
+    d3.select('body').on('click.context-menu', function() {
+      d3.select('.context-menu').style('display', 'none');
+    });
+
+    let shortDesc = d.description.replace(/^(.{100}[^\s]*).*/, "$1");
+    let id = kebabCase(d.id);
+    let semesters = new Set();
+    for (section of d.sections) {
+      semesters.add(section.semester.split(' ')[0]);
+    }
+
+    // this gets executed when a contextmenu event occurs
+    d3.selectAll('.context-menu')
+    	.html(`
+        <span><b>Add ${d.id}</b></span>
+        ${Object.values(d.sections).filter(section => section.start !== 'ARRANGED').map(function(section, idx) {
+          return `<span class="tag is-link is-light is-rounded time tooltip" onclick="addCourse('${d.id}', '${idx}');" style="margin-top: 2px;">
+                    ${section.semester.split(' ')[0]}&nbsp;&nbsp;${section.days} ${section.start} to ${section.end}
+                    <span class="tooltiptext">${section.instructors === 'None'? 'TBD': truncate(section.instructors, 20)}</span>
+                  </span>`;
+        }).join("")}
+        <span class="tag is-link is-light is-rounded time tooltip" onclick="addCourse('${d.id}', '-1');" style="margin-top: 2px;">
+          No Section
+        </span>`).on('click', function(d) {
+        d3.select('.context-menu').style('display', 'none');
+      });
+
+    d3.select('.context-menu').style('display', 'none');
+    // show the context menu
+    d3.select('.context-menu')
+      .style('left', d3.event.pageX + 'px')
+      .style('top', d3.event.pageY + 'px')
+      .style('display', 'block');
+    d3.event.preventDefault();
   });
 }
 
@@ -301,9 +340,6 @@ function draw(roots) {
     .attr("stroke", d => Object.keys(gRoots).includes(d.id)? "#7ce5fc": d3.lab(color(d)).darker())
     .attr("fill", color)
     .call(drag(simulation));
-
-  // node.append("title")
-  //     .text(d => `${d.id}: ${d.title}`);
 
   simulation.on("tick", () => {
     link.attr("x1", d => d.source.x)
@@ -342,13 +378,16 @@ function drawLegend(subjects, color) {
     .attr("rx", 8)
     .attr("ry", 8)
     .attr("width", lConfig.width)
-    .attr("height", lConfig.height);
+    .attr("height", lConfig.height)
+    .style("pointer-events", "none");
 
   svg.select("g#legend").append("text")
     .attr("font-weight", "bold")
     .attr("x", lConfig.x + lConfig.width/2)
     .attr("y", lConfig.y + 2*lConfig.p)
     .attr("text-anchor", "middle")
+    .style("pointer-events", "none")
+    .style("user-select", "none")
     .text("Subjects");
 
   svg.select("g#legend").selectAll("mydots")
@@ -360,9 +399,9 @@ function drawLegend(subjects, color) {
       .attr("width", lConfig.marker.size)
       .attr("height", lConfig.marker.size)
       .style("fill", d => color(d))
+      .style("pointer-events", "none")
       .style("alignment-baseline", "middle");
 
-  // Add one dot in the legend for each name.
   svg.select("g#legend").selectAll("mylabels")
     .data(subjects)
     .enter()
@@ -372,6 +411,8 @@ function drawLegend(subjects, color) {
       .style("fill", d => color(d))
       .text(d => d === 'None'? 'Not offered in 2020': d)
       .attr("text-anchor", "left")
+      .style("pointer-events", "none")
+      .style("user-select", "none")
       .style("alignment-baseline", "middle");
   return svg.select("g#legend");
 }
