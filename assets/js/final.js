@@ -130,6 +130,10 @@ function seasonToIcon(season) {
   return icon;
 }
 
+function truncate(str, n) {
+  return (str.length > n) ? str.substr(0, n-1) + '&hellip;' : str;
+}
+
 function addResults(results) {
   if (results == false || results.length == 0) {
     if (!$('#search').val()) {
@@ -180,7 +184,7 @@ function addResults(results) {
             ${Object.values(result.item.sections).filter(section => section.start !== 'ARRANGED').map(function(section, idx) {
               return `<span class="tag is-link is-light is-rounded time tooltip" onclick="addCourse('${result.item.id}', '${idx}');">
                         <i class="fas fa-${seasonToIcon(section.semester.split(' ')[0])}"></i>&nbsp;&nbsp;${section.days} ${section.start} to ${section.end}
-                        <span class="tooltiptext">${section.instructors === 'None'? 'TBD': section.instructors}</span>
+                        <span class="tooltiptext">${section.instructors === 'None'? 'TBD': truncate(section.instructors, 20)}</span>
                       </span>`;
             }).join("")}
             <span class="tag is-link is-light is-rounded time tooltip" onclick="addCourse('${result.item.id}', '-1');">
@@ -276,6 +280,7 @@ function draw(roots) {
   const data = search(roots);
 
   buildSchedule();
+  drawLegend([...new Set(data.nodes.map(d => d.subject))], scale);
 
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
@@ -321,6 +326,63 @@ function draw(roots) {
   return svg.node();
 }
 
+function drawLegend(subjects, color) {
+  svg.select("g#legend").selectAll("*").remove();
+  let lConfig = {
+    'x': 770,
+    'y': 635,
+    'width': 185,
+    'height': 35 + (subjects.length * 15),
+    'p': 10,
+    'marker': {
+      'size': 10
+    }
+  };
+
+  lConfig.y -= lConfig.height;
+
+  // Legend from: https://www.d3-graph-gallery.com/graph/custom_legend.html
+  svg.select("g#legend").append("rect")
+    .attr("fill", "rgba(240, 240, 240, 0.6)")
+    .attr("x", lConfig.x)
+    .attr("y", lConfig.y)
+    .attr("rx", 8)
+    .attr("ry", 8)
+    .attr("width", lConfig.width)
+    .attr("height", lConfig.height);
+
+  svg.select("g#legend").append("text")
+    .attr("font-weight", "bold")
+    .attr("x", lConfig.x + lConfig.width/2)
+    .attr("y", lConfig.y + 2*lConfig.p)
+    .attr("text-anchor", "middle")
+    .text("Subjects");
+
+  svg.select("g#legend").selectAll("mydots")
+    .data(subjects)
+    .enter()
+    .append("rect")
+      .attr("x", lConfig.x + lConfig.p)
+      .attr("y", (d,i) => lConfig.y + 3*lConfig.p + i*(lConfig.marker.size+5))
+      .attr("width", lConfig.marker.size)
+      .attr("height", lConfig.marker.size)
+      .style("fill", d => color(d))
+      .style("alignment-baseline", "middle");
+
+  // Add one dot in the legend for each name.
+  svg.select("g#legend").selectAll("mylabels")
+    .data(subjects)
+    .enter()
+    .append("text")
+      .attr("x", lConfig.x + 2*lConfig.p + lConfig.marker.size*1.2)
+      .attr("y", (d,i) => lConfig.y + 3*lConfig.p  + i*(lConfig.marker.size+5) + (lConfig.marker.size/2))
+      .style("fill", d => color(d))
+      .text(d => d === 'None'? 'Not offered in 2020': d)
+      .attr("text-anchor", "left")
+      .style("alignment-baseline", "middle");
+  return svg.select("g#legend");
+}
+
 function buildSchedule() {
   let table = document.querySelector("div#schedule");
   table.innerHTML = "";
@@ -331,7 +393,7 @@ function buildSchedule() {
   console.log(data);
   for (course of data) {
     let creditSplit = course.credits.split(' ');
-    if (gRoots[course.id].has(-1)) {
+    if (creditSplit.length > 1 && gRoots[course.id].has(-1)) {
       creditsMin += +creditSplit[0];
       creditsMax += creditSplit.length > 3? +creditSplit[2]: +creditSplit[0];
     }
@@ -352,12 +414,12 @@ function buildSchedule() {
       <p class="has-text-dark is-size-7">${course.description}<p>
       <h5 class="is-size-7">Selected Sections:<h5>
       <div class="tags" style="margin-top: 5px; margin-bottom: 2px;">
-        ${sections.filter(section => section.start !== 'ARRANGED').map(function(section, idx) {
+        ${sections.filter(section => section.start !== 'ARRANGED' && section.credits !== 'None').map(function(section, idx) {
           creditsMin += +creditSplit[0];
           creditsMax += creditSplit.length > 3? +creditSplit[2]: +creditSplit[0];
           return `<span class="tag is-link is-light is-rounded time tooltip" onclick="removeCourse('${course.id}', '${sectionNums[idx]}');">
                     <i class="fas fa-${seasonToIcon(section.semester.split(' ')[0])}"></i>&nbsp;&nbsp;${section.days} ${section.start} to ${section.end}
-                    <span class="tooltiptext">${section.instructors === 'None'? 'TBD': section.instructors}</span>
+                    <span class="tooltiptext">${section.instructors === 'None'? 'TBD': truncate(section.instructors, 20)}</span>
                   </span>`;
         }).join("")}
         ${gRoots[course.id].has(-1)? `<span class="tag time is-link is-light is-rounded" onclick="removeCourse('${course.id}', '-1');">No Section</span>`: ''}

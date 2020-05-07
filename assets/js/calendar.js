@@ -27,7 +27,8 @@ function drawCalendar(courseInfo) {
             'start': section.start,
             'end': section.end,
             'semester': section.semester,
-            'instructors': section.instructors === 'None'? 'TBD': section.instructors
+            'instructors': section.instructors === 'None'? 'TBD': section.instructors,
+            'subject': course.subject
           });
       }
       times.push(timeFormat(section.start));
@@ -68,7 +69,7 @@ function drawCalendar(courseInfo) {
 
   // https://stackoverflow.com/questions/44800471/check-if-times-overlap-using-moment
   function checkOverlap(sections) {
-    if (sections.length === 1) return false;
+    if (sections.length === 1) return [];
     let overlaps = [];
 
     for (day of categories) {
@@ -124,7 +125,8 @@ function drawCalendar(courseInfo) {
         return timeScale(timeFormat(d.end)) - timeScale(timeFormat(d.start));
       })
       .attr("stroke", "none")
-      .attr("fill", "rgba(1, 40, 85, 0.6)"); // TODO: Change color here
+      .style("opacity", 0.6)
+      .attr("fill", d => color(d)); // TODO: Change color here
 
     let tooltip = d => {
       let me = d3.select(this);
@@ -196,7 +198,7 @@ function drawCalendar(courseInfo) {
   }
 
   function vertLabels(gap, leftPad, theSidePad) {
-    let axisText = calendarSvg.append("g") //without doing this, impossible to put grid lines behind text
+    let axisText = calendarSvg.append("g")
       .selectAll("text")
       .data(categories)
       .enter()
