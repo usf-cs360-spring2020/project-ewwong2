@@ -107,6 +107,7 @@ function drawCalendar(courseInfo) {
       .attr("opacity", 0.2);
 
     var rectangles = calendarSvg.append('g')
+      .attr("id", "inner-rects")
       .selectAll("rect")
       .data(data)
       .enter();
@@ -126,10 +127,15 @@ function drawCalendar(courseInfo) {
       })
       .attr("stroke", "none")
       .style("opacity", 0.6)
-      .attr("fill", d => color(d)); // TODO: Change color here
+      .attr("fill", d => color(d));
 
     let tooltip = d => {
       let me = d3.select(this);
+
+      calendarSvg.select("#inner-rects").selectAll("rect").filter(e => (d.course !== e.course || d.start !== e.start || d.end !== e.end || d.days !== e.days || d.instructors !== e.instructors))
+        .transition()
+        .style("opacity", 0.2);
+
       let div = d3.select("body").append("div");
       div.attr("id", "tag");
 
@@ -154,6 +160,7 @@ function drawCalendar(courseInfo) {
         .style("color", "white");
       rows.append("td").text(key => tips[key])
         .style("color", "white");
+
       return rows;
     }
     let tooltipMove = d => {
@@ -169,6 +176,11 @@ function drawCalendar(courseInfo) {
     }
     let tooltipLeave = d => {
       let me = d3.select(this);
+
+      calendarSvg.select("#inner-rects").selectAll("rect").filter(e => (d.course !== e.course || d.start !== e.start || d.end !== e.end || d.days !== e.days || d.instructors !== e.instructors))
+        .transition()
+        .style("opacity", 0.6);
+
       d3.selectAll("div#tag").remove();
       return me;
     }
