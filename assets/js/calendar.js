@@ -42,19 +42,27 @@ function drawCalendar(courseInfo) {
   let conflictCount = d3.select("span#conflict-count").html(`${conflicts.length} conflicts`);
   conflictCount.classed("is-success", conflicts.length <= 0);
   conflictCount.classed("is-danger", conflicts.length > 0);
-  for (conflict of conflicts) {
-    d3.select("div#conflicts").html(`
-      ${d3.select("div#conflicts").html()}
-      <span class="tag time is-danger is-light is-rounded">${conflict[0].course} overlaps ${conflict[1].course} on ${conflict[1].day}</span>
-    `);
-    console.log(conflict);
-  }
 
   const timeScale = d3.scaleTime()
     .domain(d3.extent(times))
     .range([0, h - 150]);
 
   makeGant(courseInfo, w, h);
+
+  for (conflict of conflicts) {
+    d3.select("div#conflicts").html(`
+      ${d3.select("div#conflicts").html()}
+      <span class="tag time is-danger is-light is-rounded">${conflict[0].course} overlaps ${conflict[1].course} on ${conflict[1].day}</span>
+    `);
+    calendarSvg.select("#inner-rects").selectAll("rect").filter(e => courseMatch(conflict[0], e) || courseMatch(conflict[1], e))
+      .style("stroke", "red")
+      .style("stroke-width", 2);
+    console.log(conflict);
+  }
+
+  function courseMatch(d, e) {
+    return d.course === e.course && d.start === e.start && d.end === e.end && d.days === e.days && d.instructors === e.instructors;
+  }
 
   function makeGant(courseInfo, pageWidth, pageHeight) {
     const barWidth = pageWidth / 7 - (6 * 4) + 5;
@@ -219,7 +227,7 @@ function drawCalendar(courseInfo) {
         return d;
       })
       .attr("x", function(d, i) {
-          return gap / 2 + i * gap + leftPad - 5;
+          return gap / 2 + i * gap + leftPad - 6;
       })
       .attr("y", 15)
       .attr("font-weight", "bold")
