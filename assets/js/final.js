@@ -29,13 +29,13 @@ const forceProperties = {
         radius: 5
     },
     forceX: {
-        enabled: false,
-        strength: .8,
+        enabled: true,
+        strength: .01,
         x: .5
     },
     forceY: {
-        enabled: false,
-        strength: .8,
+        enabled: true,
+        strength: .01,
         y: .5
     },
     link: {
@@ -78,15 +78,7 @@ d3.json('{{ '/assets/data/uoi-2020.json' | prepend: site.baseurl }}', convert).t
 });
 
 window.onload = function () {
-  document.getElementById("search").addEventListener("input", function (e) {
-    let val = $('#search').val();
-    setTimeout(function() {
-      addResults(fuse.search(val));
-    }, 100);
-  });
-  // document.getElementById("filter").addEventListener("input", function (e) {
-  //   draw($('#filter').val());
-  // });
+  document.getElementById("search").addEventListener("input", _.debounce(addResults, 250));
 }
 
 function removeGarbage(nodes) {
@@ -134,7 +126,8 @@ function truncate(str, n) {
   return (str.length > n) ? str.substr(0, n-1) + '&hellip;' : str;
 }
 
-function addResults(results) {
+function addResults() {
+  let results = fuse.search($('#search').val());
   if (results == false || results.length == 0) {
     if (!$('#search').val()) {
       $('#results').removeClass('expand');
@@ -153,7 +146,7 @@ function addResults(results) {
       scrollTop: 0
   }, 500);
   let result_str = '';
-  for (result of results.slice(0, 100)) {
+  for (result of results.slice(0, 50)) {
     let shortDesc = result.item.description.replace(/^(.{200}[^\s]*).*/, "$1");
     let id = kebabCase(result.item.id);
     let semesters = new Set();
