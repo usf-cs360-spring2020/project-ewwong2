@@ -68,14 +68,13 @@ const options = {
 
 let fuse;
 
-d3.json('{{ '/assets/data/uoi-2020.json' | prepend: site.baseurl }}', convert).then(data => {
+d3.json('{{ '/assets/data/uoi-2020-2.json' | prepend: site.baseurl }}', convert).then(data => {
   console.log(data);
   data.nodes = removeGarbage(data.nodes);
   fuse = new Fuse(data.nodes, options);
   map = mapping(data);
   initDefaults();
-  addCourse("CS 473", 1)
-  // draw([Object.keys(map.nodes)[0]]);
+  addCourse("CS 473", 1);
 });
 
 window.onload = function () {
