@@ -371,6 +371,10 @@ function drawLegend(subjects, color) {
 
   lConfig.y -= lConfig.height;
 
+  if (navigator.userAgent.indexOf("Firefox") > 0) {
+    lConfig.y -= 45;
+  }
+
   // Legend from: https://www.d3-graph-gallery.com/graph/custom_legend.html
   svg.select("g#legend").append("rect")
     .attr("fill", "rgba(240, 240, 240, 0.6)")

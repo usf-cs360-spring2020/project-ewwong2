@@ -104,6 +104,12 @@
   }
 }
 
+@media screen and (max-width: 770px) {
+  #calendar-column:hover {
+    width: 100%;
+  }
+}
+
 .result {
   margin: 10px 0px;
   background-color: rgba(255, 255, 255, 0.7);
