@@ -18,7 +18,7 @@ const forceProperties = {
     },
     charge: {
         enabled: true,
-        strength: -30,
+        strength: -80,
         distanceMin: 1,
         distanceMax: 2000
     },
