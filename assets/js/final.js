@@ -30,12 +30,12 @@ const forceProperties = {
     },
     forceX: {
         enabled: true,
-        strength: .04,
+        strength: .02,
         x: .5
     },
     forceY: {
         enabled: true,
-        strength: .04,
+        strength: .02,
         y: .5
     },
     link: {
@@ -285,7 +285,7 @@ function initInteractivity() {
     // this gets executed when a contextmenu event occurs
     d3.selectAll('.context-menu')
     	.html(`
-        <span><b>Add ${d.id}</b></span>
+        <span><b>Add ${d.id}</b></span><br/>
         ${Object.values(d.sections).filter(section => section.start !== 'ARRANGED').map(function(section, idx) {
           return `<span class="tag is-link is-light is-rounded time tooltip" onclick="addCourse('${d.id}', '${idx}');" style="margin-top: 2px;">
                     ${section.semester.split(' ')[0]}&nbsp;&nbsp;${section.days} ${section.start} to ${section.end}

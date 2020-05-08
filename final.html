@@ -14,14 +14,13 @@ title: Course Selection
     <div id="results-wrapper">
       <div id="results"></div>
     </div>
-    <div style="margin-top:20px;/*background-color: rgba(255, 221, 87, 0.7);*/padding: 0px 10px; border-radius: 5px;">
+    <div style="margin-top:20px; padding: 0px 10px; border-radius: 5px;">
       <div class="content" style="padding-top: 0px;">
         <p class="title" style="margin-bottom: 10px;">Schedule</p>
         <div class="tags" style="margin-top: 5px; margin-bottom: 2px; justify-content: center;">
           <span class="tag time is-link is-light is-rounded" id="credit-hours">0 credit hours</span>
           <span class="tag time is-success is-light is-rounded tooltip" id="conflict-count">
             0 conflicts
-            <!-- <span class="tooltiptext"></span> -->
           </span>
         </div>
         <div class="tags" style="margin-top: 5px; margin-bottom: 2px; justify-content: center;" id="conflicts"></div>
@@ -52,8 +51,10 @@ title: Course Selection
         </div>
       </div>
       <figcaption>
-        <b>Caption:</b> This visualiation is a force directed graph. It shows the
-        courses needed to take the selected courses. More information
+        <b>Caption:</b> The first visualization is a calendar inspired by a
+        <a href="https://codepen.io/jey/pen/jmClJ">Gantt chart</a>. This shows
+        the course sections that have been selected. The second visualiation is
+        a force directed graph. It shows course dependencies. More information
         about the data can be found
         <a href="{{ "/data.html" | prepend: site.baseurl }}">here</a>.
       </figcaption>
@@ -63,57 +64,84 @@ title: Course Selection
   <script src="{{ "/assets/js/final.js" | prepend: site.baseurl }}"></script>
   <script src="{{ "/assets/js/calendar.js" | prepend: site.baseurl }}"></script>
 </div>
-<div class="mt-4">
-  <h3>Question</h3>
-  <p>
-    The question this visualization aims to answer is broadly "What courses do I
-    need to take in order to take this other course?". The specific course or
-    courses will depend on the person using the visualization and filters.
-  </p>
-</div>
-<div class="mt-4">
-  <h3>Answer</h3>
-  <p>
-    This visualization is aimed more towards data exploration so without
-    selecting any courses, it doesn't really answer any question. If we look at
-    a specific question though, such as "What do I need to take in order to take
-    Interactive Computer Graphics (CS 418)?". We can select this course and see
-    that we would need to take alot of courses. From the schedule tile, we can
-    see that we would need to take: CS 225 and (MATH 225 or MATH 415) and MATH
-    241. Each of those requirements have their own requirements though. All the
-    requirements and the requirements for the requirements can be seen in the
-    graph.
-  </p>
-</div>
+<hr/>
 <div class="mt-4">
   <h3>Encoding</h3>
   <p>
-    The data only shows Spring 2020 courses. Color encodes the subject. A node
-    represents a course. A directed link represents a dependency from one course
+    The data only shows 2020 courses excluding winter courses from the
+    University of Illinois. Color encodes the subject. A node represents a
+    course. A directed link represents a dependency from one course
     to another course. This can be a variety of different link types such as
     prerequisites or corerequisites.
   </p>
 </div>
 <div class="mt-4">
-  <h3>Interactivity</h3>
+  <h3>Interactivity Instructions</h3>
   <p>
-    The graph can be filtered by courses. This can be done by choosing one or
-    more courses in the "Course Selection" tile. Ctrl + Click to select multiple.
-    Shift + Click to select and range.
+    Start by chosing a course from the search. If you are interested in learning
+    about "circuits", you can enter this in the search to see what is offered.
+  </p>
+  <img src="{{ "/assets/images/search.png" | prepend: site.baseurl }}" width=500 style="border-radius: 5px; border: 1px dashed gainsboro;"/>
+  <p>
+    We can see that there are multiple circuit courses offered. Let's select the
+    first one. We are now presented with section options of the course across 3
+    semesters.
+  </p>
+  <img src="{{ "/assets/images/sections.png" | prepend: site.baseurl }}" width=500 style="border-radius: 5px; border: 1px dashed gainsboro;"/>
+  <p>
+    After we chose a section, the calendar updates to the section chosen. The
+    chart also shows the dependencies of the course and their dependencies. At
+    this point, we can choose to remove a section, add another section from search,
+    add a section from the dependency graph, or view conflicts.
+  </p>
+  <img src="{{ "/assets/images/Overview.png" | prepend: site.baseurl }}" width=500 style="border-radius: 5px; border: 1px dashed gainsboro;"/>
+</div>
+<div class="mt-4">
+  <h3>Interactivity Implemented</h3>
+  <p>
+    The graph can be filtered by course(s). This version scraps the original
+    multi select input. Trading off data exploration for practicality, a search
+    by title, course id, and description was added. This supports selecting a
+    particular section and semester of a course. This choice is then added to
+    the schedule list that supports removing sections. This choice is also added
+    to the Gantt inspired calendar and the force directed graph.
   </p>
   <p>
-    This will update the graph to
-    show the dependencies for those courses. The next paragraph will explain
-    how this works. Details on demand are also provided as a seperate tile under
-    the course selection. This is to prevent sporadic graph loading and
-    obscuring the graph with a tooltip. An interactivity that has not been
-    implemented yet is double click to add the course as to the course selection.
+    In order to accomodate courses that do not have a fixed time or will have a
+    time arranged later, a "No Section" selection is provided that will be added
+    to the graph but not the calendar.
+  </p>
+  <p>
+    The calendar supports brushing. To highlight the course section, other
+    courses will have a lower opacity when brushing.
+  </p>
+  <p>
+    A tooltip is also provided for the calendar. This tooltip provides more
+    information about the section in the calendar.
+  </p>
+  <p>
+    The graph has a basic outline when hovered over as well as detail on demand
+    positioned in the top right in order to limit obstruction of the graph.
+  </p>
+  <p>
+    The graph updates to show the dependencies for the chosen courses. The next
+    paragraph will explain how this works.
   </p>
   <p>
     Selecting a course is actually starting a
     <a href="https://en.wikipedia.org/wiki/Depth-first_search">Depth First Search</a>
     for each "root" (course). This will add each course in the DFS to the graph
-    and include the corresponding links.
+    and include the corresponding links. This prevents a cluttered view.
+  </p>
+  <p>
+    The graph also supports adding sections from the context menu. Simply right
+    click on a course to add this to the schedule, calendar, and graph.
+  </p>
+  <p>
+    The tags below the "Schedule" title also show the credits hours range of the
+    selected sections including "No Section" and also lists course conflicts.
+    These conflicts are shown in red with a red border around the offending
+    courses.
   </p>
 </div>
 <div class="mt-4">
@@ -124,13 +152,37 @@ title: Course Selection
   </p>
 </div>
 <div class="mt-4">
-  <h3>Conclusion</h3>
+  <h3>Caveats</h3>
+  <p>
+    I was unable to find structured data for prerequisites specifically, so it
+    was ultimately decided not to represent part of the information and
+    misrepresent the rest. In specific, it was originally planned to give
+    corerequisites a different link color. However, it seems that there are an
+    arbitrary amount of ways to explain this in English: "concurrent
+    registration in", "concurrent registration in the other", "concurrent
+    registration in either course", and more. This is also coupled with the use
+    of "and" and "or". This visualization also fails to encode "and" and "or"
+    relations and leads to some false negatives. If there is enough interest, I
+    have ideas on how to parse this. Otherwise, each link will broadly encode a
+    dependency that can be explored further through the schedule or node details.
+  </p>
+  <p>
+    If there is an interest for this, I would love to explore this project
+    further including better parsing, offset course overlaps, corerequisites,
+    <a href="https://bl.ocks.org/XavierGimenez/a8e8c5e9aed71ba96bd52332682c0399">grouped force directed nodes</a>
+    to show "and" vs "or", integration with major
+    and minor cirriculum, and a filter for the search.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Findings</h3>
   <p>
     It is really interesting to see how the dependency graph grows. While it
     seems self explanatory that higher division course will have larger trees,
-    it seems that there are quite a free higher division courses that have no
+    it seems that there are quite a few higher division courses that have no
     prerequisites at all. There are also quite a few courses with special
-    requirements such as permission from the instructor.
+    requirements such as permission from the instructor. It is easy to see how
+    certain classes connect to one another by adding them into the visualization.
   </p>
 </div>
 <div class="mt-4" style="display: grid;">
@@ -139,4 +191,14 @@ title: Course Selection
   <a href="http://bl.ocks.org/fancellu/2c782394602a93921faff74e594d1bb1">Direct Force Directed Graph</a>
   <a href="https://observablehq.com/@d3/force-directed-graph">Force Directed Graph</a>
   <a href="https://blockbuilder.org/steveharoz/8c3e2524079a8c440df60c1ab72b5d03">D3-force Testing Ground</a>
+  <a href="https://github.com/illinois/courses-dataset">University of Illinois course dataset</a>
+  <a href="https://stackoverflow.com/questions/39124517/how-to-open-d3-js-context-menu-on-left-click-instead-of-right-click">Context Menu</a>
+  <a href="https://codepen.io/jey/pen/jmClJ">Gantt Chart</a>
+  <a href="https://fusejs.io/">Fuse search library</a>
+  <a href="">Some design elements were inspired by</a>
+</div>
+<div class="mt-4">
+  <h3>Inspirations</h3>
+  Some design elements were inspired by <a href="https://picker.mit.edu/">MIT course picker</a>
+  and <a href="https://firehose.guide/">FirHose</a>
 </div>
