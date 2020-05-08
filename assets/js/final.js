@@ -74,6 +74,7 @@ d3.json('{{ '/assets/data/uoi-2020.json' | prepend: site.baseurl }}', convert).t
   fuse = new Fuse(data.nodes, options);
   map = mapping(data);
   initDefaults();
+  addCourse("CS 473", 1)
   // draw([Object.keys(map.nodes)[0]]);
 });
 
