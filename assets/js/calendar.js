@@ -28,7 +28,8 @@ function drawCalendar(courseInfo) {
             'end': section.end,
             'semester': section.semester,
             'instructors': section.instructors === 'None'? 'TBD': section.instructors,
-            'subject': course.subject
+            'subject': course.subject,
+            'sectionId': section.sectionId
           });
       }
       times.push(timeFormat(section.start));
@@ -195,7 +196,34 @@ function drawCalendar(courseInfo) {
     innerRects
         .on("mouseover", tooltip)
         .on("mousemove", tooltipMove)
-        .on("mouseout", tooltipLeave);
+        .on("mouseout", tooltipLeave)
+        .on("contextmenu.info", function(d) {
+          // create the div element that will hold the context menu
+          d3.selectAll('.context-menu').data([1])
+            .enter()
+            .append('div')
+            .attr('class', 'context-menu');
+          // close menu
+          d3.select('body').on('click.context-menu', function() {
+            d3.select('.context-menu').style('display', 'none');
+          });
+          console.log(d);
+          // this gets executed when a contextmenu event occurs
+          d3.selectAll('.context-menu')
+          	.html(`
+              <span onclick="removeCourse('${d.course}', '${d.sectionId}');"><b>Remove ${d.course}</b></span>
+            `).on('click', function(d) {
+              d3.select('.context-menu').style('display', 'none');
+            });
+
+          d3.select('.context-menu').style('display', 'none');
+          // show the context menu
+          d3.select('.context-menu')
+            .style('left', d3.event.pageX + 'px')
+            .style('top', d3.event.pageY + 'px')
+            .style('display', 'block');
+          d3.event.preventDefault();
+        });
   }
 
   function makeGrid(theSidePad, theTopPad, w, h) {

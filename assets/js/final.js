@@ -436,7 +436,11 @@ function buildSchedule() {
       creditsMax += creditSplit.length > 3? +creditSplit[2]: +creditSplit[0];
     }
     let sectionNums = [...gRoots[course.id]].sort().filter(sectionIdx => sectionIdx !== -1);
-    let sections = sectionNums.map(sectionIdx => map.nodes[course.id].sections.filter(section => section.start !== 'ARRANGED')[sectionIdx]);
+    let sections = sectionNums.map(sectionIdx => {
+      let s = map.nodes[course.id].sections.filter(section => section.start !== 'ARRANGED')[sectionIdx];
+      s.sectionId = sectionIdx;
+      return s;
+    });
     let tempCourse = {...course};
     tempCourse.sections = sections;
     calendarData = calendarData.concat(tempCourse);
