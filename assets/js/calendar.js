@@ -18,7 +18,7 @@ function drawCalendar(courseInfo) {
 
   for (course of courseInfo) {
     for (section of course.sections) {
-      for (day of section.days) {
+      for (day of section.days.trim()) {
           sectionInfo.push({
             'course': course.id,
             'title': course.title,
