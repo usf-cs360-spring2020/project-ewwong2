@@ -1,0 +1,80 @@
+.context-menu { position: absolute; display: none; border-radius: 5px; max-width: 250px; z-index: 1200; padding: 5px 15px; justify-content: center; text-align: center; background-color: rgba(250, 250, 250, 0.9); font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif; max-height: 150px; font-size: 11px; overflow-y: auto; overflow-x: hidden; }
+
+#container { margin: 0 auto; position: relative; overflow: visible; transition: width 1s; }
+
+#calendar-column { height: fit-content; transition: width 0.6s ease; }
+
+#calendar-column:hover { width: 50%; transition: width 0.6s ease 0.3s; }
+
+#calendar { max-height: 600px; overflow: visible; }
+
+.grid .tick { stroke: lightgrey; opacity: 0.3; stroke-width: 0.7; }
+
+.grid path { stroke-width: 0; }
+
+#tag { color: white; background: rgba(85, 85, 85, 0.8); border-radius: 5px; position: absolute; padding: 3px 6px; font-size: 11px; pointer-events: none; }
+
+.content { padding: 30px 0px; text-align: center; justify-content: center; max-width: 1000px; margin: auto; }
+
+#results.expand { transition: all .4s ease; max-height: 400px; }
+
+#results-wrapper { width: 80%; position: relative; margin: auto; }
+
+#results { z-index: 50; min-width: 60%; transition: all .4s ease; max-height: 0; position: absolute; left: 50%; background-color: rgba(240, 240, 240, 0.9); -webkit-transform: translateX(-50%); transform: translateX(-50%); border-radius: 5px; overflow-y: scroll; padding: 0px 60px; }
+
+@media screen and (max-width: 800px) { #results { max-width: 100%; padding: 0px 20px; }
+  #results-wrapper { width: 100%; position: relative; margin: auto; } }
+@media screen and (max-width: 770px) { #calendar-column:hover { width: 100%; } }
+.result { margin: 10px 0px; background-color: rgba(255, 255, 255, 0.7); border-radius: 5px; transition: all .25s ease; position: relative; }
+
+.result-front { padding: 5px 30px; display: block; width: 100%; height: auto; }
+
+#schedule { padding: 0px 30px; }
+
+.schedule-entry { background-color: #f8f8f8; border-radius: 5px; padding: 10px 30px; margin-bottom: 5px; text-align: left; }
+
+.show { opacity: 1 !important; }
+
+.result-back { position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: 100%; width: 100%; opacity: 0; transition: .5s ease; background-color: rgba(249, 249, 249, 0.95); border-radius: 5px; overflow-y: auto; padding: 0px 20px; }
+
+.buffer { position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: 100%; width: 100%; opacity: 0; transition: .5s ease; border-radius: 5px; overflow-y: auto; z-index: 100; }
+
+.move-back { z-index: -999 !important; }
+
+.time { transition: all .25s ease; }
+
+.time:hover { transition: all .25s ease; background-color: #d0e1ff !important; }
+
+.result:hover, .result-back:hover { background-color: white; transition: all .25s ease; }
+
+.tooltip { position: relative; display: inline-block; }
+
+.tooltip .tooltiptext { visibility: hidden; width: 150px; background-color: #555; color: #fff; text-align: center; border-radius: 6px; padding: 3px 0; position: absolute; z-index: 1; top: 135%; left: 50%; margin-left: -75px; opacity: 0; transition: opacity 0.3s; }
+
+.tooltip .tooltiptext::after { content: " "; position: absolute; bottom: 100%; /* At the top of the tooltip */ left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: transparent transparent #555 transparent; }
+
+.tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+
+.mt-4 { margin-top: 20px; }
+
+#tools a { padding-left: 1em; padding-right: 1em; margin-right: 5px; }
+
+table#schedule td, table#schedule th { border-bottom: 1px solid rgba(237, 83, 56, 0.2); }
+
+nav { background-color: #012855 !important; }
+
+.navbar-burger { color: white !important; }
+
+.icon { color: #ed5338; }
+
+nav { padding-left: 15px; }
+
+.segment { margin-bottom: 30px; }
+
+table { margin: auto; }
+
+.footer { /*
+Hack to extend footer:
+https://stackoverflow.com/questions/9741701/how-can-i-extend-a-footer-to-bottom-of-page */ box-shadow: 0 50vh 0 50vh #fafafa; }
+
+#contact { width: 75%; margin: auto; padding: 30px 60px; }

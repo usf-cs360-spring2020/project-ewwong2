@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Visualization</title>
+
+    <!-- https://bulma.io/ -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link rel="stylesheet" href="/project-ewwong2/assets/css/styles.css">
+
+    <!-- Load Font Awesome 5 (free) icons -->
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Page navigation -->
+<!-- https://bulma.io/documentation/components/navbar/ -->
+<nav class="navbar is-transparent">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="main-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="main-menu" class="navbar-menu has-text-weight-medium">
+    <!-- Right navbar items -->
+    <div class="navbar-start">
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link is-arrowless" href="/project-ewwong2/index.html">
+          <span class="icon"><i class="fas fa-home"></i></span>
+        </a>
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="/project-ewwong2/index.html">
+            <span class="icon"><i class="fas fa-home" style="margin-right: 15px;"></i></span>Home
+          </a>
+        </div>
+      </div>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link is-arrowless" href="/project-ewwong2/final.html">
+          <span class="icon"><i class="fas fa-chart-bar"></i></span>
+        </a>
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="/project-ewwong2/final.html">
+            <span class="icon"><i class="fas fa-graduation-cap" style="margin-right: 15px;"></i></span>Course Selection
+          </a>
+          <a class="navbar-item" href="/project-ewwong2/viz.html">
+            <span class="icon"><i class="fas fa-project-diagram" style="margin-right: 15px;"></i></span>Beta Prototype
+          </a>
+          <a class="navbar-item" href="/project-ewwong2/alpha.html">
+            <span class="icon"><i class="fas fa-chart-area" style="margin-right: 15px;"></i></span>Alpha Prototypes
+          </a>
+        </div>
+      </div>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link is-arrowless" href="/project-ewwong2/data.html">
+          <span class="icon"><i class="fas fa-table"></i></span>
+        </a>
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="/project-ewwong2/data.html">
+            <span class="icon"><i class="fas fa-table" style="margin-right: 15px;"></i></span>Data
+          </a>
+        </div>
+      </div>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link is-arrowless" href="/project-ewwong2/about.html">
+          <span class="icon"><i class="fas fa-address-card"></i></span>
+        </a>
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="/project-ewwong2/about.html">
+            <span class="icon"><i class="fas fa-address-card" style="margin-right: 15px;"></i></span>About me
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- End page navigation -->
+
+    <div class="content">
+      <h2 class="title is-2">Visualization</h2>
+      <div class="mt-4">
+  <h3>Force Directed Graph</h3>
+  <p class="subtitle">Spring 2020 Course Prerequisites</p>
+  <div class="flex-container">
+    <div style="position:absolute;transform: translate(0px, 15px); width: 250px; height: 100%;">
+      <div style="background-color: rgba(1, 40, 85, 0.7);padding: 0px 20px; border-radius: 5px;">
+        <div class="content has-text-white">
+          <p class="title has-text-white">Course Selection</p>
+          <p class="subtitle has-text-white">Choose your courses:</p>
+          <div class="content">
+            <div class="select is-multiple">
+              <select multiple id="filter" style="width: 140px;"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:5px;background-color: rgba(237, 83, 56, 0.7); padding: 0px 20px; border-radius: 5px; opacity: 0;" id="hover-container">
+        <div class="content is-size-7 has-text-white" id="hover" style="height: 160px; overflow: auto;padding: 20px 0px;"></div>
+      </div>
+    </div>
+    <figure>
+      <svg id="graph" style="min-height: 600px;">
+        <g id="links"></g>
+        <g id="circles"></g>
+        <g id="legend">
+          <g id="legend-color"></g>
+        </g>
+        <g id="labels"></g>
+      </svg>
+
+      <figcaption>
+        Caption: This visualiation is a force directed graph. It shows the
+        courses needed to take the selected courses. More information
+        about the data can be found
+        <a href="/project-ewwong2/data.html">here</a>.
+      </figcaption>
+    </figure>
+  </div>
+  <div style="margin-top:20px;background-color: rgba(255, 221, 87, 0.7);padding: 0px 20px; border-radius: 5px;">
+    <div class="content">
+      <p class="title">Schedule</p>
+      <!-- <p class="subtitle">↪</p> -->
+      <div class="content">
+        <div class="table-container">
+          <table class="table is-hoverable" style="background-color: transparent;" id="schedule"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="/project-ewwong2/assets/js/fdgraph.js"></script>
+</div>
+<div class="mt-4">
+  <h3>Feedback</h3>
+  <table class="table is-hoverable is-bordered grades">
+    <thead>
+      <tr>
+        <th>
+          <center>Suggestions</center>
+        </th>
+        <th>
+          <center>Improvements</center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          "it was hard to remember what color meant... a legend would be a good help"
+          <br/>
+          "it might be useful to have a legend of some sort to know what subject each is supposed to represent"
+        </td>
+        <td>
+          A legend was added to the graph that shifts upwards as more subjects
+          are added to the graph.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          From asking peers for additional feedback, I heard that the multi
+          select is too short and does not show enough courses.
+        </td>
+        <td>
+          I did not have enough space to make this longer, so I opted to replace
+          this with a search bar. This would provide more context about the
+          class than just the course id.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          From live synchronous feedback, one feedback was that I may need
+          another visualization for a higher grade.
+        </td>
+        <td>
+          I pulled in more data from the dataset to get section information.
+          Then I created a calendar in D3 inspired by a Gantt chart example.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="mt-4">
+  <h3>Question</h3>
+  <p>
+    The question this visualization aims to answer is broadly "What courses do I
+    need to take in order to take this other course?". The specific course or
+    courses will depend on the person using the visualization and filters.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Answer</h3>
+  <p>
+    This visualization is aimed more towards data exploration so without
+    selecting any courses, it doesn't really answer any question. If we look at
+    a specific question though, such as "What do I need to take in order to take
+    Interactive Computer Graphics (CS 418)?". We can select this course and see
+    that we would need to take alot of courses. From the schedule tile, we can
+    see that we would need to take: CS 225 and (MATH 225 or MATH 415) and MATH
+    241. Each of those requirements have their own requirements though. All the
+    requirements and the requirements for the requirements can be seen in the
+    graph.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Encoding</h3>
+  <p>
+    The data only shows Spring 2020 courses. Color encodes the subject. A node
+    represents a course. A directed link represents a dependency from one course
+    to another course. This can be a variety of different link types such as
+    prerequisites or corerequisites.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Interactivity</h3>
+  <p>
+    The graph can be filtered by courses. This can be done by choosing one or
+    more courses in the "Course Selection" tile. Ctrl + Click to select multiple.
+    Shift + Click to select and range.
+  </p>
+  <p>
+    This will update the graph to
+    show the dependencies for those courses. The next paragraph will explain
+    how this works. Details on demand are also provided as a seperate tile under
+    the course selection. This is to prevent sporadic graph loading and
+    obscuring the graph with a tooltip. An interactivity that has not been
+    implemented yet is double click to add the course as to the course selection.
+  </p>
+  <p>
+    Selecting a course is actually starting a
+    <a href="https://en.wikipedia.org/wiki/Depth-first_search">Depth First Search</a>
+    for each "root" (course). This will add each course in the DFS to the graph
+    and include the corresponding links.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Wrangling</h3>
+  <p>
+    Details about data wrangling can be found
+    <a href="/project-ewwong2/data.html">here</a>.
+  </p>
+</div>
+<div class="mt-4">
+  <h3>Conclusion</h3>
+  <p>
+    It is really interesting to see how the dependency graph grows. While it
+    seems self explanatory that higher division course will have larger trees,
+    it seems that there are quite a free higher division courses that have no
+    prerequisites at all. There are also quite a few courses with special
+    requirements such as permission from the instructor.
+  </p>
+</div>
+<div class="mt-4" style="display: grid;">
+  <h3>Attribution</h3>
+  <a href="https://www.valentinog.com/blog/html-table/">HTML Table in JS</a>
+  <a href="http://bl.ocks.org/fancellu/2c782394602a93921faff74e594d1bb1">Direct Force Directed Graph</a>
+  <a href="https://observablehq.com/@d3/force-directed-graph">Force Directed Graph</a>
+  <a href="https://blockbuilder.org/steveharoz/8c3e2524079a8c440df60c1ab72b5d03">D3-force Testing Ground</a>
+</div>
+
+    </div>
+    <!-- Page footer -->
+<!-- https://bulma.io/documentation/layout/footer/ -->
+<footer class="footer">
+  <div class="content has-text-centered is-size-7">
+    <p>
+      <a href="#top">
+        <span class="fas fa-arrow-up"></span>
+        <span class="has-text-weight-medium">Back to Top</span>
+      </a>
+    </p>
+
+    <p id="tools">
+      <a href="https://github.com/usf-cs360-spring2020/project-ewwong2" class="button is-small is-rounded">
+        <i class="fab fa-github-alt"></i>
+      </a>
+
+      <a href="https://fontawesome.com/" class="button is-small is-rounded">
+        <i class="fab fa-font-awesome"></i>
+      </a>
+
+      <a href="https://bulma.io" class="button is-small is-rounded">
+        <img src="https://bulma.io/images/bulma-logo.png" alt="Made with Bulma" height="24" style="height: 12px;">
+      </a>
+
+      <a href="https://www.tableau.com" class="button is-small is-rounded">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Tableau_Logo.png" style="height: 18px; padding-left: 5px;" />
+      </a>
+
+      <a href="https://d3js.org/" class="button is-small is-rounded">
+        <img src="https://raw.githubusercontent.com/d3/d3-logo/master/d3.png" style="height: 20px; padding-left: 5px;" />
+      </a>
+
+      <a href="https://fusejs.io/" class="button is-small is-rounded">
+        <img src="https://fusejs.io/assets/img/logo.png" style="height: 20px;" />
+      </a>
+    </p>
+    <p>✏️ Created by <a href="/project-ewwong2/about.html">Edmund Wong</a> for Data Visualization Course</p>
+  </div>
+</footer>
+<!-- End page footer -->
+
+    <!-- Mobile menu responsiveness -->
+    <!-- https://bulma.io/documentation/components/navbar/ -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+      if ($navbarBurgers.length > 0) {
+        $navbarBurgers.forEach( el => {
+          el.addEventListener('click', () => {
+            const target = el.dataset.target;
+            const $target = document.getElementById(target);
+            el.classList.toggle('is-active');
+            $target.classList.toggle('is-active');
+          });
+        });
+      }
+    });
+    </script>
+    <!-- End mobile menu responsiveness -->
+  </body>
+
+</html>
