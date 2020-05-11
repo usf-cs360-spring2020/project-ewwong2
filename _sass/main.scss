@@ -47,6 +47,22 @@
     stroke-width: 0;
 }
 
+#feedback td {
+  text-align: center;
+}
+
+td.success {
+  color: #02ca02;
+}
+
+td.failure {
+  color: #e37272;
+}
+
+td.wait {
+  color: #f5e847;
+}
+
 #tag {
   color: white;
   background: rgba(85, 85, 85, 0.8);

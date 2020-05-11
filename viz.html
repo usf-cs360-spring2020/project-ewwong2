@@ -54,55 +54,31 @@ title: Visualization
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="{{ "/assets/js/fdgraph.js" | prepend: site.baseurl }}"></script>
 </div>
-<div class="mt-4">
-  <h3>Feedback</h3>
-  <table class="table is-hoverable is-bordered grades">
-    <thead>
-      <tr>
-        <th>
-          <center>Suggestions</center>
-        </th>
-        <th>
-          <center>Improvements</center>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          "it was hard to remember what color meant... a legend would be a good help"
-          <br/>
-          "it might be useful to have a legend of some sort to know what subject each is supposed to represent"
-        </td>
-        <td>
-          A legend was added to the graph that shifts upwards as more subjects
-          are added to the graph.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          From asking peers for additional feedback, I heard that the multi
-          select is too short and does not show enough courses.
-        </td>
-        <td>
-          I did not have enough space to make this longer, so I opted to replace
-          this with a search bar. This would provide more context about the
-          class than just the course id.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          From live synchronous feedback, one feedback was that I may need
-          another visualization for a higher grade.
-        </td>
-        <td>
-          I pulled in more data from the dataset to get section information.
-          Then I created a calendar in D3 inspired by a Gantt chart example.
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<tr>
+  <td>
+    From live synchronous feedback, another feedback was to draw the path
+    from one course to anoher if it exists.
+  </td>
+  <td>
+    I opted not to follow through with this feedback. I could not find a
+    plausible use case for this that fits the narrative. While I can see
+    how a student would want to see the prerequisites of a course, I can't
+    think of a student that would need to check if a specific course connects
+    to another.
+  </td>
+</tr>
+<tr>
+  <td>
+    From additional feedback from peers
+  </td>
+  <td>
+    I opted not to follow through with this feedback. I could not find a
+    plausible use case for this that fits the narrative. While I can see
+    how a student would want to see the prerequisites of a course, I can't
+    think of a student that would need to check if a specific course connects
+    to another.
+  </td>
+</tr>
 <div class="mt-4">
   <h3>Question</h3>
   <p>

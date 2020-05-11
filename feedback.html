@@ -1,0 +1,109 @@
+---
+layout: default
+title: Feedback
+---
+<div class="mt-4">
+  <table class="table is-hoverable is-bordered grades" id="feedback">
+    <thead>
+      <tr>
+        <th>
+          <center>Completed?</center>
+        </th>
+        <th>
+          <center>Suggestions</center>
+        </th>
+        <th>
+          <center>Improvements</center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="success">
+          <i class="fas fa-check-circle"></i>
+        </td>
+        <td>
+          "it was hard to remember what color meant... a legend would be a good help"
+          <br/>
+          "it might be useful to have a legend of some sort to know what subject each is supposed to represent"
+        </td>
+        <td>
+          A legend was added to the graph that shifts upwards as more subjects
+          are added to the graph.
+        </td>
+      </tr>
+      <tr>
+        <td class="success">
+          <i class="fas fa-check-circle"></i>
+        </td>
+        <td>
+          From asking peers for additional feedback, I heard that the multi
+          select is too short and does not show enough courses.
+        </td>
+        <td>
+          I did not have enough space to make this longer, so I opted to replace
+          this with a search bar. This would provide more context about the
+          class than just the course id.
+        </td>
+      </tr>
+      <tr>
+        <td class="success">
+          <i class="fas fa-check-circle"></i>
+        </td>
+        <td>
+          From live synchronous feedback, one feedback was that I may need
+          another visualization for a higher grade.
+        </td>
+        <td>
+          I pulled in more data from the dataset to get section information.
+          Then I created a calendar in D3 inspired by a Gantt chart example.
+        </td>
+      </tr>
+      <tr>
+        <td class="failure">
+          <i class="fas fa-times-circle"></i>
+        </td>
+        <td>
+          From live synchronous feedback, another feedback was to show the path
+          between two courses if a path exists.
+        </td>
+        <td>
+          I opted not to follow through with this feedback. I could not find a
+          plausible use case for this that fits the narrative. While I can see
+          how a student would want to see the prerequisites of a course, I can't
+          think of a student that would need to check if a specific course connects
+          to another specific course.
+        </td>
+      </tr>
+      <tr>
+        <td class="success">
+          <i class="fas fa-check-circle"></i>
+        </td>
+        <td>
+          From additional feedback from peers, I was told that the use of the
+          site was a little hard to figure out how to use. I was suggested to
+          add hints in the search bar and start with a starting course.
+        </td>
+        <td>
+          I added some images as well as a more streamlined interactivity
+          instructions in the writeup. I also started with a course and added
+          search suggestions in the search bar.
+        </td>
+      </tr>
+      <tr>
+        <td class="wait">
+          <i class="fas fa-minus-circle"></i>
+        </td>
+        <td>
+          From additional feedback from peers, I was suggested to create a more
+          structured version of the graph to make it easier to read.
+        </td>
+        <td>
+          This will not be included in the final version of this visualization.
+          However, future work might include a force directed tree that can have
+          duplicate nodes as a toggle option for the graph.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
