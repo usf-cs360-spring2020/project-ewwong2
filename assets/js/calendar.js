@@ -145,6 +145,14 @@ function drawCalendar(courseInfo) {
         .transition()
         .style("opacity", 0.2);
 
+      svg.selectAll("circle.circles").filter(e => d.course === e.id)
+        .transition()
+        .attr("r", 10);
+
+      svg.selectAll("circle.circles").filter(e => d.course !== e.id)
+        .transition()
+        .style("opacity", 0.5);
+
       let div = d3.select("body").append("div");
       div.attr("id", "tag");
 
@@ -189,6 +197,14 @@ function drawCalendar(courseInfo) {
       calendarSvg.select("#inner-rects").selectAll("rect").filter(e => (d.course !== e.course || d.start !== e.start || d.end !== e.end || d.days !== e.days || d.instructors !== e.instructors))
         .transition()
         .style("opacity", 0.6);
+
+      svg.selectAll("circle.circles").filter(e => d.course === e.id)
+        .transition()
+        .attr("r", 7);
+
+      svg.selectAll("circle.circles").filter(e => d.course !== e.id)
+        .transition()
+        .style("opacity", 1);
 
       d3.selectAll("div#tag").remove();
       return me;

@@ -246,6 +246,10 @@ function initInteractivity() {
       .transition()
       .attr("stroke", "rgb(255, 128, 128)");
 
+    calendarSvg.select("#inner-rects").selectAll("rect").filter(e => d.id !== e.course)
+      .transition()
+      .style("opacity", 0.2);
+
     d3.select("div#hover")
       .html(`
         <b>Course:</b> ${d.id}<br/>
@@ -260,6 +264,10 @@ function initInteractivity() {
     d3.select(this)
       .transition()
       .attr("stroke", Object.keys(gRoots).includes(d.id)? "#7ce5fc": d3.lab(color(d)).darker());
+
+      calendarSvg.select("#inner-rects").selectAll("rect").filter(e => d.id !== e.course)
+        .transition()
+        .style("opacity", 0.6);
 
       d3.select("div#hover-container")
         .transition()
